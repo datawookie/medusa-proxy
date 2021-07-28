@@ -27,7 +27,6 @@ def main():
         log.info("Testing proxies.")
 
         for proxy in haproxy.proxies:
-            log.info(f"Testing proxy (port {proxy.port}).")
             if not proxy.working:
                 log.warning("Restarting.")
                 proxy.restart()
