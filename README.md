@@ -3,11 +3,15 @@
 ## HAProxy
 
 HAProxy exposes a SOCKS proxy.
+
+## Privoxy
+
+Privoxy exposes an HTTP proxy.
 ## Environment Variables
 
-- `TORS` — Number of Tor instances
-- `HAPROXY_LOGIN` — Username for HAProxy
-- `HAPROXY_PASSWORD` — Password for HAProxy
+- `TORS` — Number of Tor instances (default: 5)
+- `HAPROXY_LOGIN` — Username for HAProxy (default: "admin")
+- `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin")
 
 ## Ports
 

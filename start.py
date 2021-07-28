@@ -10,10 +10,12 @@ import log
 from service import Service
 from tor import Tor
 from haproxy import Haproxy
+from privoxy import Privoxy
 
 tors = int(os.environ.get('TORS', 5))
 
 haproxy = Haproxy([Tor(i) for i in range(tors)])
+privoxy = Privoxy(haproxy)
 
 def shutdown():
     log.info("Shutting down.")
