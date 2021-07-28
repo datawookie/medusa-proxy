@@ -1,4 +1,5 @@
 import os
+import time
 import signal
 
 import log
@@ -45,4 +46,13 @@ class Service:
         except FileNotFoundError:
             pass
         else:
+            # Kill politely.
             os.kill(pid, signal.SIGINT)
+            # Give it a moment to die graciously.
+            time.sleep(1)
+            # Kill insistently.
+            os.kill(pid, signal.SIGKILL)
+    
+    def restart(self):
+        self.stop()
+        self.start()
