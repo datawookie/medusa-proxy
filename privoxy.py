@@ -1,7 +1,5 @@
-import os
 import jinja2
 
-import log
 import service
 
 CONFIG_PATH = "/etc/privoxy/config"
