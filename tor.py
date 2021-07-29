@@ -1,5 +1,6 @@
 import jinja2
 import requests
+from signal import SIGHUP
 
 import log
 import service
@@ -18,7 +19,9 @@ class Tor(service.Service):
         with open("templates/tor.cfg", "rt") as file:
             template = jinja2.Template(file.read())
 
-        config = template.render()
+        config = template.render(
+            new_circuit_period = self.new_circuit_period,
+        )
 
         with open(CONFIG_PATH, "wt") as file:
             file.write(config)
@@ -54,11 +57,10 @@ class Tor(service.Service):
         self.run(
             self.executable,
             f"--SocksPort {self.port}",
-            f"--NewCircuitPeriod {self.new_circuit_period}",
-            f"--MaxCircuitDirtiness {self.max_circuit_dirtiness}",
-            f"--CircuitBuildTimeout {self.circuit_build_timeout}",
             f"--DataDirectory {self.data_directory}",
             f"--PidFile {self.pid_file}",
-            "--Log 'warn syslog'",
-            '--RunAsDaemon 1',
         )
+
+    def cycle(self):
+        log.debug(f"Requesting new exit node (port {self.port}).")
+        self.kill(SIGHUP)
