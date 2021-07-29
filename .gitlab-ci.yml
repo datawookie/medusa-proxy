@@ -1,0 +1,36 @@
+stages:
+  - build
+
+variables:
+  IMAGE_NAME: tor-proxy-rotating
+  IMAGE_VERSION: 0.0.1
+  ACCOUNT_NAME: datawookie
+  TAG_LATEST: $ACCOUNT_NAME/$IMAGE_NAME:latest
+  TAG_VERSION: $ACCOUNT_NAME/$IMAGE_NAME:$IMAGE_VERSION
+  DOCKER_REGISTRY_USER: $ACCOUNT_NAME
+  DOCKER_REGISTRY: docker.io
+  DOCKER_TLS_CERTDIR: ""
+
+before_script:
+  - export
+  # DOCKER_REGISTRY_PASSWORD is in CI/CD settings.
+  - docker login -u "$DOCKER_REGISTRY_USER" -p "$DOCKER_REGISTRY_PASSWORD" $DOCKER_REGISTRY
+
+build:
+  image: docker:stable
+  stage: build
+  only:
+    - master
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  services:
+    - docker:dind
+  artifacts:
+    paths:
+    - build.log
+    expire_in: 1 week
+  script:
+    - docker info
+    - docker build -t $TAG_VERSION -t $TAG_LATEST . | tee build.log
+    - docker push $TAG_VERSION
+    - docker push $TAG_LATEST
