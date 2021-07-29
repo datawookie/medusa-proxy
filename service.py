@@ -1,6 +1,6 @@
 import os
 import time
-import signal
+from signal import SIGINT, SIGKILL
 
 import log
 
@@ -35,23 +35,21 @@ class Service:
     def data_directory(self):
       return f"/var/lib/{self.name}"
 
+    def kill(self, signal):
+        os.kill(self.pid, signal)
+
     def run(self, *args):
         command = " ".join(args)
         log.info(f"Running: {command}.")
         os.system(command)
     
     def stop(self):
-        try:
-            pid = int(open(self.pid_file, "rt").read().strip())
+        try:            
+            self.kill(SIGINT)                   # Kill politely.            
+            time.sleep(1)                       # Give it a moment to die graciously.            
+            self.kill(SIGKILL)                  # Kill insistently.
         except FileNotFoundError:
             pass
-        else:
-            # Kill politely.
-            os.kill(pid, signal.SIGINT)
-            # Give it a moment to die graciously.
-            time.sleep(1)
-            # Kill insistently.
-            os.kill(pid, signal.SIGKILL)
     
     def restart(self):
         self.stop()
