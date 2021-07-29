@@ -3,11 +3,9 @@
 import os, sys
 import time
 import atexit
-import requests
 
 import log
 
-from service import Service
 from tor import Tor
 from haproxy import Haproxy
 from privoxy import Privoxy
@@ -24,15 +22,18 @@ def shutdown():
 
 def main():
     while True:
-        log.info("Testing proxies.")
+        for i in range(3):
+            log.info("Testing proxies.")
+            for proxy in haproxy.proxies:
+                if not proxy.working:
+                    log.warning("Restarting.")
+                    proxy.restart()
+
+            log.info("Sleeping.")
+            time.sleep(60)
 
         for proxy in haproxy.proxies:
-            if not proxy.working:
-                log.warning("Restarting.")
-                proxy.restart()
-
-        log.info("Sleeping.")
-        time.sleep(60)
+            proxy.cycle()
 
 atexit.register(shutdown)
 
