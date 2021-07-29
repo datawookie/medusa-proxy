@@ -3,7 +3,7 @@ stages:
 
 variables:
   IMAGE_NAME: tor-proxy-rotating
-  IMAGE_VERSION: 0.0.1
+  IMAGE_VERSION: 0.0.2
   ACCOUNT_NAME: datawookie
   TAG_LATEST: $ACCOUNT_NAME/$IMAGE_NAME:latest
   TAG_VERSION: $ACCOUNT_NAME/$IMAGE_NAME:$IMAGE_VERSION
