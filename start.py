@@ -4,11 +4,7 @@ import os, sys
 import time
 import atexit
 
-import log
-
-from tor import Tor
-from haproxy import Haproxy
-from privoxy import Privoxy
+from proxy import log, Tor, Haproxy, Privoxy
 
 tors = int(os.environ.get('TORS', 5))
 

@@ -1,10 +1,10 @@
 import jinja2
 
-import service
+from .service import Service
 
 CONFIG_PATH = "/etc/privoxy/config"
 
-class Privoxy(service.Service):
+class Privoxy(Service):
     executable = "/usr/sbin/privoxy"
 
     def __init__(self, socks, port=8888):

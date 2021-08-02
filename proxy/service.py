@@ -2,7 +2,7 @@ import os
 import time
 from signal import SIGINT, SIGKILL
 
-import log
+from . import log
 
 class Service:
     def __init__(self, port):

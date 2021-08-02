@@ -1,11 +1,11 @@
 import os
 import jinja2
 
-import service
+from .service import Service
 
 CONFIG_PATH = "/etc/haproxy/haproxy.cfg"
 
-class Haproxy(service.Service):
+class Haproxy(Service):
     executable = "/usr/sbin/haproxy"
 
     def __init__(self, proxies, port=1080):

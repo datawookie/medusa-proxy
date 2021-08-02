@@ -2,12 +2,12 @@ import jinja2
 import requests
 from signal import SIGHUP
 
-import log
-import service
+from . import log
+from .service import Service
 
 CONFIG_PATH = "/etc/tor/torrc"
 
-class Tor(service.Service):
+class Tor(Service):
     executable = "/usr/bin/tor"
 
     def __init__(self, id, new_circuit_period = None, max_circuit_dirtiness = None, circuit_build_timeout = None):
