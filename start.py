@@ -6,10 +6,13 @@ import atexit
 
 from proxy import log, Tor, Haproxy, Privoxy
 
-tors = int(os.environ.get('TORS', 5))
+NTOR = int(os.environ.get('NTOR', 5))
+NPRIVOXY = int(os.environ.get('NPRIVOXY', 2))
 
-haproxy = Haproxy([Tor(i) for i in range(tors)])
-privoxy = Privoxy(haproxy)
+haproxy = Haproxy([Tor(i) for i in range(NTOR)])
+
+privoxy = [Privoxy(haproxy, i) for i in range(NPRIVOXY)]
+privoxy = privoxy[0]
 
 def shutdown():
     log.info("Shutting down.")
