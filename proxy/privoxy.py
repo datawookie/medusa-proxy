@@ -7,8 +7,8 @@ CONFIG_PATH = "/etc/privoxy/config"
 class Privoxy(Service):
     executable = "/usr/sbin/privoxy"
 
-    def __init__(self, socks, port=8888):
-        super().__init__(port)
+    def __init__(self, socks, id = 0, port=8888):
+        super().__init__(port + id)
 
         with open("templates/privoxy.cfg", "rt") as file:
             template = jinja2.Template(file.read())
