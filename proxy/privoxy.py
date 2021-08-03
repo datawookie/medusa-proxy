@@ -4,16 +4,15 @@ from .service import Service
 from .haproxy import Haproxy
 from .tor import Tor
 
-CONFIG_PATH = "/etc/privoxy/config"
-
 class Privoxy(Service):
     executable = "/usr/sbin/privoxy"
 
-    def __init__(self, ntor, id = 0, port=8888):
+    def __init__(self, ntor, id=0, port=8888):
         self.id = id
         super().__init__(port + self.id)
 
-        self.haproxy = Haproxy([Tor() for i in range(ntor)])
+        self.config = f"/etc/privoxy/config-{self.id}"
+        self.haproxy = Haproxy(self.id, [Tor() for i in range(ntor)])
 
         with open("templates/privoxy.cfg", "rt") as file:
             template = jinja2.Template(file.read())
@@ -23,12 +22,12 @@ class Privoxy(Service):
             socks       = self.haproxy,
         )
 
-        with open(CONFIG_PATH, "wt") as file:
+        with open(self.config, "wt") as file:
             file.write(config)
 
         self.run(
             self.executable,
-            CONFIG_PATH,
+            self.config,
         )
 
     def cycle(self):
@@ -36,3 +35,4 @@ class Privoxy(Service):
             proxy.cycle()
 
     def stop(self):
+        self.haproxy.stop()

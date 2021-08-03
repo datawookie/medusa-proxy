@@ -4,17 +4,17 @@ import jinja2
 
 from .service import Service
 
-CONFIG_PATH = "/etc/haproxy/haproxy.cfg"
-
 class Haproxy(Service):
     executable = "/usr/sbin/haproxy"
 
-    def __init__(self, proxies, port=1080):
-        super().__init__(port)
+    def __init__(self, id, proxies, port=1080):
+        self.id = id
+        super().__init__(port + self.id)
         self.proxies = proxies
         self.options = "-V"
+        self.config = f"/etc/haproxy/haproxy-{self.id}"
 
-        for proxy in proxies:
+        for proxy in self.proxies:
             log.debug(f"Linking proxy at port {proxy.port}.")
 
         with open("templates/haproxy.cfg", "rt") as file:
@@ -25,23 +25,29 @@ class Haproxy(Service):
             login       = os.environ.get("HAPROXY_LOGIN", "admin"),
             password    = os.environ.get("HAPROXY_PASSWORD", "admin"),
             port        = self.port,
-            proxies     = self.proxies
+            stats       = 2090 + self.id,
+            proxies     = self.proxies,
         )
 
-        with open(CONFIG_PATH, "wt") as file:
+        with open(self.config, "wt") as file:
             file.write(config)
 
         self.run(
             self.executable,
             self.options,
-            f"-f {CONFIG_PATH}",
+            f"-f {self.config}",
         )
     
     def reload(self):
         self.run(
             self.executable,
             self.options,
-            f"-f {CONFIG_PATH}",
+            f"-f {self.config}",
             f"-p {self.pid_file}",
             f"-sf {self.pid}"
         )
+    
+    def stop(self):
+        for proxy in self.proxies:
+            del proxy
+

@@ -11,11 +11,6 @@ NPRIVOXY = int(os.environ.get('NPRIVOXY', 2))
 
 privoxy = [Privoxy(NTOR, i) for i in range(NPRIVOXY)]
 
-def shutdown():
-    log.info("Shutting down.")
-    # for proxy in haproxy.proxies:
-    #     proxy.stop()
-
 def main():
     while True:
         for i in range(3):
@@ -35,12 +30,9 @@ def main():
         for http in privoxy:
             http.cycle()
 
-atexit.register(shutdown)
-
 try:
     main()
 except KeyboardInterrupt:
-    shutdown()
     try:
         sys.exit(0)
     except SystemExit:
