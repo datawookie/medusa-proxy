@@ -9,9 +9,14 @@ CONFIG_PATH = "/etc/tor/torrc"
 
 class Tor(Service):
     executable = "/usr/bin/tor"
+    count = 0
 
-    def __init__(self, id, new_circuit_period = None, max_circuit_dirtiness = None, circuit_build_timeout = None):
-        super().__init__(10000 + id)
+    def __init__(self, new_circuit_period = None, max_circuit_dirtiness = None, circuit_build_timeout = None):
+        self.id = Tor.count
+        Tor.count += 1
+
+        super().__init__(10000 + self.id)
+
         self.new_circuit_period     = new_circuit_period or 120
         self.max_circuit_dirtiness  = max_circuit_dirtiness or 600
         self.circuit_build_timeout  = circuit_build_timeout or 60

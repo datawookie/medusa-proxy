@@ -1,4 +1,5 @@
 import os
+from proxy import log
 import jinja2
 
 from .service import Service
@@ -12,6 +13,9 @@ class Haproxy(Service):
         super().__init__(port)
         self.proxies = proxies
         self.options = "-V"
+
+        for proxy in proxies:
+            log.debug(f"Linking proxy at port {proxy.port}.")
 
         with open("templates/haproxy.cfg", "rt") as file:
             template = jinja2.Template(file.read())
