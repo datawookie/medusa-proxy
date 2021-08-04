@@ -7,6 +7,10 @@ from .service import Service
 
 CONFIG_PATH = "/etc/tor/torrc"
 
+# Number of seconds to wait when checking if a proxy is working.
+#
+WORKING_TIMEOUT = 5
+
 class Tor(Service):
     executable = "/usr/bin/tor"
     count = 0
@@ -43,7 +47,11 @@ class Tor(Service):
         }
 
         try:
-            response = requests.get(TEST_URL, proxies=proxies)
+            response = requests.get(
+                TEST_URL,
+                proxies=proxies,
+                timeout=WORKING_TIMEOUT,
+            )
             ip = response.text.strip()
             result = True
         except requests.exceptions.ConnectionError:
@@ -61,6 +69,8 @@ class Tor(Service):
     def start(self):
         self.run(
             self.executable,
+            # Suppress startup messages (before torrc is parsed).
+            "--quiet",
             f"--SocksPort {self.port}",
             f"--DataDirectory {self.data_directory}",
             f"--PidFile {self.pid_file}",
