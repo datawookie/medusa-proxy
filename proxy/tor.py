@@ -54,7 +54,10 @@ class Tor(Service):
             )
             ip = response.text.strip()
             result = True
-        except requests.exceptions.ConnectionError:
+        except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ReadTimeout,
+        ):
             ip = "---"
             result = False
 
