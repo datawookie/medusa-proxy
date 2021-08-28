@@ -2,7 +2,7 @@ stages:
   - build
 
 variables:
-  IMAGE_NAME: tor-proxy-rotating
+  IMAGE_NAME: medusa-proxy
   IMAGE_VERSION: 0.0.2
   ACCOUNT_NAME: datawookie
   TAG_LATEST: $ACCOUNT_NAME/$IMAGE_NAME:latest
