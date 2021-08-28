@@ -31,6 +31,7 @@ build:
     expire_in: 1 week
   script:
     - docker info
-    - docker build -t $TAG_VERSION -t $TAG_LATEST . | tee build.log
+    - docker pull $TAG_LATEST || true
+    - docker build --cache-from $TAG_LATEST -t $TAG_COMMIT -t $TAG_LATEST .
     - docker push $TAG_VERSION
     - docker push $TAG_LATEST
