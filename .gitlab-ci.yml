@@ -6,7 +6,7 @@ variables:
   IMAGE_VERSION: 0.0.2
   ACCOUNT_NAME: datawookie
   TAG_LATEST: $ACCOUNT_NAME/$IMAGE_NAME:latest
-  TAG_VERSION: $ACCOUNT_NAME/$IMAGE_NAME:$IMAGE_VERSION
+  TAG_COMMIT: $ACCOUNT_NAME/$IMAGE_NAME:$IMAGE_VERSION
   DOCKER_REGISTRY_USER: $ACCOUNT_NAME
   DOCKER_REGISTRY: docker.io
   DOCKER_TLS_CERTDIR: ""
@@ -33,5 +33,5 @@ build:
     - docker info
     - docker pull $TAG_LATEST || true
     - docker build --cache-from $TAG_LATEST -t $TAG_COMMIT -t $TAG_LATEST .
-    - docker push $TAG_VERSION
+    - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
