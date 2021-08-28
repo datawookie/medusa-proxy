@@ -11,11 +11,11 @@ RUN apk add 'tor' --no-cache \
 
 WORKDIR /
 
-COPY start.py /
+COPY start.py proxy-list.py /
 COPY proxy/ /proxy
 COPY templates/ /templates
-RUN chmod +x start.py
+RUN chmod +x *.py
 
-EXPOSE 2090 1080 8888
+EXPOSE 2090 1080 8888 8800
 
 CMD ./start.py

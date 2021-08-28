@@ -2,3 +2,4 @@
 .idea
 *.code-workspace
 *.pyc
+proxy-list.txt
