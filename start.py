@@ -16,7 +16,6 @@ privoxy = [Privoxy(TORS, i) for i in range(UNITS)]
 def main():
     log.info("Writing proxy list.")
     with open(PROXY_LIST_TXT, "wt") as file:
-        file.write("# List of Privoxy URLs:\n#\n")
         for http in privoxy:
             file.write("http://127.0.0.1:%d\n" % http.port)
     log.info("Done.")
