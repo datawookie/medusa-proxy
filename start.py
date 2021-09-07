@@ -8,10 +8,10 @@ from proxy import log, Privoxy
 PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
-NTOR = int(os.environ.get('NTOR', 5))
-NPRIVOXY = int(os.environ.get('NPRIVOXY', 2))
+TORS = int(os.environ.get('TORS', 5))
+UNITS = int(os.environ.get('UNITS', 2))
 
-privoxy = [Privoxy(NTOR, i) for i in range(NPRIVOXY)]
+privoxy = [Privoxy(TORS, i) for i in range(UNITS)]
 
 def main():
     log.info("Writing proxy list.")
