@@ -13,7 +13,7 @@ HAProxy exposes a SOCKS proxy.
 Privoxy exposes an HTTP proxy.
 ## Environment Variables
 
-- `HEADS` — Number of Privoxy instances (default: 2)
+- `HEADS` — Number of Privoxy instances (default: 1)
 - `TORS` — Number of Tor instances (default: 5)
 - `HAPROXY_LOGIN` — Username for HAProxy (default: "admin")
 - `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin")

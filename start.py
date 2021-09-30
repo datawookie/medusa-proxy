@@ -9,7 +9,7 @@ PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
 TORS = int(os.environ.get('TORS', 5))
-HEADS = int(os.environ.get('HEADS', 2))
+HEADS = int(os.environ.get('HEADS', 1))
 
 privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
 
