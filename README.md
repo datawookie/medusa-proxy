@@ -13,7 +13,7 @@ HAProxy exposes a SOCKS proxy.
 Privoxy exposes an HTTP proxy.
 ## Environment Variables
 
-- `UNITS` — Number of Privoxy instances (default: 2)
+- `HEADS` — Number of Privoxy instances (default: 2)
 - `TORS` — Number of Tor instances (default: 5)
 - `HAPROXY_LOGIN` — Username for HAProxy (default: "admin")
 - `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin")
@@ -34,7 +34,7 @@ docker build -t datawookie/tor-proxy-rotating .
 docker pull datawookie/tor-proxy-rotating:latest
 
 # Start docker container
-docker run --rm --name tor-proxy-rotating -e TORS=3 -e UNITS=2 \
+docker run --rm --name tor-proxy-rotating -e TORS=3 -e HEADS=2 \
     -p 8888:8888 -p 8889:8889 \
     -p 1080:1080 -p 1081:1081 \
     -p 2090:2090 \

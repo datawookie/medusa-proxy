@@ -9,9 +9,9 @@ PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
 TORS = int(os.environ.get('TORS', 5))
-UNITS = int(os.environ.get('UNITS', 2))
+HEADS = int(os.environ.get('HEADS', 2))
 
-privoxy = [Privoxy(TORS, i) for i in range(UNITS)]
+privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
 
 def main():
     log.info("Writing proxy list.")
