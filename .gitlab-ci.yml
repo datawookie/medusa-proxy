@@ -25,10 +25,6 @@ build:
     GIT_SUBMODULE_STRATEGY: recursive
   services:
     - docker:dind
-  artifacts:
-    paths:
-    - build.log
-    expire_in: 1 week
   script:
     - docker info
     - docker pull $TAG_LATEST || true
