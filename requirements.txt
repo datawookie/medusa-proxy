@@ -1,3 +1,4 @@
-Jinja2==2.11.3
+Jinja2==3.1.2
 PySocks==1.7.1
 requests==2.26.0
+pre-commit==3.2.0

@@ -42,15 +42,15 @@ class Service:
         command = " ".join(args)
         log.info(f"Running: {command}.")
         os.system(command)
-    
+
     def stop(self):
-        try:            
-            self.kill(SIGINT)                   # Kill politely.            
-            time.sleep(1)                       # Give it a moment to die graciously.            
+        try:
+            self.kill(SIGINT)                   # Kill politely.
+            time.sleep(1)                       # Give it a moment to die graciously.
             self.kill(SIGKILL)                  # Kill insistently.
         except FileNotFoundError:
             pass
-    
+
     def restart(self):
         self.stop()
         self.start()

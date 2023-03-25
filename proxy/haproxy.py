@@ -37,7 +37,7 @@ class Haproxy(Service):
             self.options,
             f"-f {self.config}",
         )
-    
+
     def reload(self):
         self.run(
             self.executable,
@@ -46,8 +46,7 @@ class Haproxy(Service):
             f"-p {self.pid_file}",
             f"-sf {self.pid}"
         )
-    
+
     def stop(self):
         for proxy in self.proxies:
             del proxy
-
