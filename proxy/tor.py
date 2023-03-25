@@ -83,12 +83,12 @@ class Tor(Service):
                 "",
                 f"{location['country']:15}",
                 f"{location['city']:18}",
-                f"{location['lat']:6.2f} / {location['lon']:6.2f}",
+                f"{location['lat']:+6.2f} / {location['lon']:+7.2f}",
             ]
             location = " | ".join(location)
         else:
             location = ""
-        log.info(f"port {self.port}: {ip:15}" + location)
+        log.info(f"port {self.port}: {ip:>15}" + location)
 
         return result
 
