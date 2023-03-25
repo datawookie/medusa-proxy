@@ -1,3 +1,4 @@
+import json
 import jinja2
 import requests
 from signal import SIGHUP
@@ -36,7 +37,7 @@ class Tor(Service):
             file.write(config)
 
         self.start()
-    
+
     @property
     def working(self):
         TEST_URL = 'http://ifconfig.me/ip'
@@ -46,22 +47,45 @@ class Tor(Service):
             'https': f'socks5://127.0.0.1:{self.port}'
         }
 
+        # Get IP.
+        #
         try:
             response = requests.get(
-                TEST_URL,
+                "https://api.ipify.org?format=json",
                 proxies=proxies,
                 timeout=WORKING_TIMEOUT,
             )
-            ip = response.text.strip()
+            ip = json.loads(response.text.strip())["ip"]
             result = True
+
+            # Get IP location.
+            #
+            response = requests.get(
+                f"http://ip-api.com/json/{ip}",
+                proxies=proxies,
+                timeout=WORKING_TIMEOUT,
+            )
+            location = response.json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ReadTimeout,
         ):
             ip = "---"
+            location = None
             result = False
 
-        log.info(f"Testing proxy (port {self.port}): {ip}.")
+
+        if location:
+            location = [
+                "",
+                f"{location['country']:15}",
+                 f"{location['city']:18}",
+                  f"{location['lat']:6.2f} / {location['lon']:6.2f}"
+            ]
+            location = " | ".join(location)
+        else:
+            location = ""
+        log.info(f"port {self.port}: {ip:15}"+location)
 
         return result
 
