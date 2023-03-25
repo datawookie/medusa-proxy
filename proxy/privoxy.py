@@ -4,6 +4,7 @@ from .service import Service
 from .haproxy import Haproxy
 from .tor import Tor
 
+
 class Privoxy(Service):
     executable = "/usr/sbin/privoxy"
 
@@ -18,8 +19,8 @@ class Privoxy(Service):
             template = jinja2.Template(file.read())
 
         config = template.render(
-            port        = self.port,
-            socks       = self.haproxy,
+            port=self.port,
+            socks=self.haproxy,
         )
 
         with open(self.config, "wt") as file:

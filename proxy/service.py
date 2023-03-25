@@ -4,6 +4,7 @@ from signal import SIGINT, SIGKILL
 
 from . import log
 
+
 class Service:
     def __init__(self, port):
         self.port = port
@@ -33,7 +34,7 @@ class Service:
 
     @property
     def data_directory(self):
-      return f"/var/lib/{self.name}"
+        return f"/var/lib/{self.name}"
 
     def kill(self, signal):
         os.kill(self.pid, signal)
@@ -45,9 +46,9 @@ class Service:
 
     def stop(self):
         try:
-            self.kill(SIGINT)                   # Kill politely.
-            time.sleep(1)                       # Give it a moment to die graciously.
-            self.kill(SIGKILL)                  # Kill insistently.
+            self.kill(SIGINT)  # Kill politely.
+            time.sleep(1)  # Give it a moment to die graciously.
+            self.kill(SIGKILL)  # Kill insistently.
         except FileNotFoundError:
             pass
 

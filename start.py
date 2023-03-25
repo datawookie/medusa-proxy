@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os
+import sys
 import time
 
 from proxy import log, Privoxy
@@ -8,10 +9,11 @@ from proxy import log, Privoxy
 PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
-TORS = int(os.environ.get('TORS', 5))
-HEADS = int(os.environ.get('HEADS', 1))
+TORS = int(os.environ.get("TORS", 5))
+HEADS = int(os.environ.get("HEADS", 1))
 
 privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
+
 
 def main():
     log.info("Writing proxy list.")
@@ -39,6 +41,7 @@ def main():
 
         for http in privoxy:
             http.cycle()
+
 
 try:
     main()

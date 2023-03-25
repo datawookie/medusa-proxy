@@ -4,6 +4,7 @@ import jinja2
 
 from .service import Service
 
+
 class Haproxy(Service):
     executable = "/usr/sbin/haproxy"
 
@@ -21,12 +22,12 @@ class Haproxy(Service):
             template = jinja2.Template(file.read())
 
         config = template.render(
-            pid_file    = self.pid_file,
-            login       = os.environ.get("HAPROXY_LOGIN", "admin"),
-            password    = os.environ.get("HAPROXY_PASSWORD", "admin"),
-            port        = self.port,
-            stats       = 2090 + self.id,
-            proxies     = self.proxies,
+            pid_file=self.pid_file,
+            login=os.environ.get("HAPROXY_LOGIN", "admin"),
+            password=os.environ.get("HAPROXY_PASSWORD", "admin"),
+            port=self.port,
+            stats=2090 + self.id,
+            proxies=self.proxies,
         )
 
         with open(self.config, "wt") as file:
@@ -44,7 +45,7 @@ class Haproxy(Service):
             self.options,
             f"-f {self.config}",
             f"-p {self.pid_file}",
-            f"-sf {self.pid}"
+            f"-sf {self.pid}",
         )
 
     def stop(self):

@@ -12,25 +12,31 @@ CONFIG_PATH = "/etc/tor/torrc"
 #
 WORKING_TIMEOUT = 5
 
+
 class Tor(Service):
     executable = "/usr/bin/tor"
     count = 0
 
-    def __init__(self, new_circuit_period = None, max_circuit_dirtiness = None, circuit_build_timeout = None):
+    def __init__(
+        self,
+        new_circuit_period=None,
+        max_circuit_dirtiness=None,
+        circuit_build_timeout=None,
+    ):
         self.id = Tor.count
         Tor.count += 1
 
         super().__init__(10000 + self.id)
 
-        self.new_circuit_period     = new_circuit_period or 120
-        self.max_circuit_dirtiness  = max_circuit_dirtiness or 600
-        self.circuit_build_timeout  = circuit_build_timeout or 60
+        self.new_circuit_period = new_circuit_period or 120
+        self.max_circuit_dirtiness = max_circuit_dirtiness or 600
+        self.circuit_build_timeout = circuit_build_timeout or 60
 
         with open("templates/tor.cfg", "rt") as file:
             template = jinja2.Template(file.read())
 
         config = template.render(
-            new_circuit_period = self.new_circuit_period,
+            new_circuit_period=self.new_circuit_period,
         )
 
         with open(CONFIG_PATH, "wt") as file:
@@ -40,11 +46,9 @@ class Tor(Service):
 
     @property
     def working(self):
-        TEST_URL = 'http://ifconfig.me/ip'
-
         proxies = {
-            'http': f'socks5://127.0.0.1:{self.port}',
-            'https': f'socks5://127.0.0.1:{self.port}'
+            "http": f"socks5://127.0.0.1:{self.port}",
+            "https": f"socks5://127.0.0.1:{self.port}",
         }
 
         # Get IP.
@@ -74,24 +78,23 @@ class Tor(Service):
             location = None
             result = False
 
-
         if location:
             location = [
                 "",
                 f"{location['country']:15}",
-                 f"{location['city']:18}",
-                  f"{location['lat']:6.2f} / {location['lon']:6.2f}"
+                f"{location['city']:18}",
+                f"{location['lat']:6.2f} / {location['lon']:6.2f}",
             ]
             location = " | ".join(location)
         else:
             location = ""
-        log.info(f"port {self.port}: {ip:15}"+location)
+        log.info(f"port {self.port}: {ip:15}" + location)
 
         return result
 
     @property
     def data_directory(self):
-      return super().data_directory+"/"+str(self.port)
+        return super().data_directory + "/" + str(self.port)
 
     def start(self):
         self.run(
