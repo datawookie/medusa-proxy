@@ -19,7 +19,7 @@ class Haproxy(Service):
             log.debug(f"Linking proxy at port {proxy.port}.")
 
         with open("templates/haproxy.cfg", "rt") as file:
-            template = jinja2.Template(file.read())
+            template = jinja2.Template(file.read(), keep_trailing_newline=True)
 
         config = template.render(
             pid_file=self.pid_file,

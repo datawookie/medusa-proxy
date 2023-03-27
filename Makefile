@@ -2,6 +2,7 @@ build:
 	docker build -t datawookie/medusa-proxy .
 
 run:
+	-docker stop medusa-proxy
 	docker run --rm \
 		--name medusa-proxy \
 		-e TORS=3 \
