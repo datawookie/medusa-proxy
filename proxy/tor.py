@@ -61,33 +61,40 @@ class Tor(Service):
             )
             ip = json.loads(response.text.strip())["ip"]
             result = True
-
-            # Get IP location.
-            #
-            response = requests.get(
-                f"http://ip-api.com/json/{ip}",
-                proxies=proxies,
-                timeout=WORKING_TIMEOUT,
-            )
-            location = response.json()
         except (
             requests.exceptions.ConnectionError,
             requests.exceptions.ReadTimeout,
         ):
             ip = "---"
-            location = None
             result = False
 
-        if location:
-            location = [
-                "",
-                f"{location['country']:15}",
-                f"{location['city']:18}",
-                f"{location['lat']:+6.2f} / {location['lon']:+7.2f}",
-            ]
-            location = " | ".join(location)
-        else:
-            location = ""
+        location = ""
+        #
+        if result:
+            # Get IP location.
+            #
+            try:
+                response = requests.get(
+                    f"http://ip-api.com/json/{ip}",
+                    proxies=proxies,
+                    timeout=WORKING_TIMEOUT,
+                )
+                location = response.json()
+            except (
+                json.decoder.JSONDecodeError,
+                requests.exceptions.ConnectTimeout,
+            ):
+                log.warning("🚨 Failed to get location.")
+
+            if location:
+                location = [
+                    "",
+                    f"{location['country']:15}",
+                    f"{location['city']:18}",
+                    f"{location['lat']:+6.2f} / {location['lon']:+7.2f}",
+                ]
+                location = " | ".join(location)
+
         log.info(f"port {self.port}: {ip:>15}" + location)
 
         return result
