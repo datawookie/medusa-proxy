@@ -1,6 +1,10 @@
 build:
 	docker build -t datawookie/medusa-proxy .
 
+push:
+	docker login
+	docker push datawookie/medusa-proxy
+
 run:
 	-docker stop medusa-proxy
 	docker run --rm \
