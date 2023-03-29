@@ -4,6 +4,7 @@ import os
 import sys
 import time
 
+from config import *
 from proxy import log, Privoxy
 
 PROXY_LIST_TXT = "proxy-list.txt"
@@ -12,10 +13,15 @@ PROXY_LIST_PY = "proxy-list.py"
 TORS = int(os.environ.get("TORS", 5))
 HEADS = int(os.environ.get("HEADS", 1))
 
-privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
-
 
 def main():
+    log.info("========================================")
+    log.info("Medusa Proxy")
+    log.info("%s" % (VERSION,))
+    log.info("========================================")
+
+    privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
+
     log.info("Writing proxy list.")
     with open(PROXY_LIST_TXT, "wt") as file:
         for http in privoxy:

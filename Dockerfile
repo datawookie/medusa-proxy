@@ -11,7 +11,7 @@ RUN apk add 'tor' --no-cache \
 
 WORKDIR /
 
-COPY start.py proxy-list.py /
+COPY start.py proxy-list.py config.py /
 COPY proxy/ /proxy
 COPY templates/ /templates
 RUN chmod +x *.py
