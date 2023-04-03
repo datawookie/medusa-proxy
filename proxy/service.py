@@ -37,7 +37,10 @@ class Service:
         return f"/var/lib/{self.name}"
 
     def kill(self, signal):
-        os.kill(self.pid, signal)
+        try:
+            os.kill(self.pid, signal)
+        except FileNotFoundError:
+            log.error("⛔ Unable to open PID file.")
 
     def run(self, *args):
         command = " ".join(args)
