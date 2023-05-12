@@ -2,7 +2,9 @@
 
 import os
 import sys
+import re
 import time
+import subprocess
 
 from config import *
 from proxy import log, Privoxy
@@ -14,10 +16,22 @@ TORS = int(os.environ.get("TORS", 5))
 HEADS = int(os.environ.get("HEADS", 1))
 
 
+def get_versions():
+    for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
+        result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
+
+        version = result.stdout.decode("utf-8").partition("\n")[0]
+        version = re.sub(r" +([0-9/]{10})?[ -]*\(?(https://.*)?\)?\.?$", "", version)
+        version = re.sub(r" version", ":", version)
+
+        log.info("- " + version)
+
+
 def main():
     log.info("========================================")
-    log.info("Medusa Proxy")
-    log.info("%s" % (VERSION,))
+    log.info(f"Medusa Proxy: {VERSION}")
+    log.info("")
+    get_versions()
     log.info("========================================")
 
     privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
