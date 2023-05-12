@@ -11,6 +11,7 @@ HAProxy exposes a SOCKS proxy.
 ## Privoxy
 
 Privoxy exposes an HTTP proxy.
+
 ## Environment Variables
 
 - `HEADS` — Number of Privoxy instances (default: 1)
@@ -46,12 +47,14 @@ curl --socks5 localhost:5566 http://httpbin.org/ip
 # Test HTTP proxy
 curl --proxy localhost:8888 http://httpbin.org/ip
 
-# or to run chromium with your new found proxy
+# Run Chromium through the proxy
 chromium --proxy-server="http://localhost:8118" \
     --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
 
-# monitor
+# Access monitor
+#
 # auth login:admin
 # auth pass:admin
+#
 http://localhost:2090 or http://admin:admin@localhost:2090
 ```
