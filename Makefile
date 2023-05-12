@@ -1,18 +1,26 @@
+IMAGE = medusa-proxy
+VERSION := $(shell grep 'alpine:' Dockerfile | sed 's/.*://')
+USERNAME = datawookie
+IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
+IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
+
 build:
-	docker build -t datawookie/medusa-proxy .
+	echo $(IMAGE_VERSION)
+	docker build -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
 
 push:
 	docker login
-	docker push datawookie/medusa-proxy
+	docker push $(IMAGE_VERSION)
+	docker push $(IMAGE_LATEST)
 
 run:
-	-docker stop medusa-proxy
+	-docker stop $(IMAGE)
 	docker run --rm \
-		--name medusa-proxy \
+		--name $(IMAGE) \
 		-e TORS=3 \
 		-e HEADS=2 \
 		-p 8800:8800 \
 		-p 8888:8888 -p 8889:8889 \
 		-p 1080:1080 -p 1081:1081 \
 		-p 2090:2090 -p 2091:2091 \
-		datawookie/medusa-proxy
+		$(IMAGE_VERSION)
