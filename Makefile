@@ -1,5 +1,5 @@
 IMAGE = medusa-proxy
-VERSION := $(shell grep 'alpine:' Dockerfile | sed 's/.*://')
+VERSION = "0.0.5"
 USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
@@ -14,7 +14,7 @@ push:
 	docker push $(IMAGE_LATEST)
 
 run:
-	-docker stop $(IMAGE)
+	@docker stop $(IMAGE) || true
 	docker run --rm \
 		--name $(IMAGE) \
 		-e TORS=3 \
