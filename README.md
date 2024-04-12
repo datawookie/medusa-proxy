@@ -1,6 +1,6 @@
 # Medusa Rotating Tor Proxy
 
-<img src="medusa-logo.png">
+<img src="medusa-banner.webp">
 
 ## HAProxy
 
