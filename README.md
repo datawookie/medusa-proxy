@@ -1,4 +1,6 @@
-# Rotating Tor Proxy
+# Medusa Rotating Tor Proxy
+
+<img src="medusa-logo.png">
 
 ## HAProxy
 
