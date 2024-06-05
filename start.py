@@ -46,7 +46,7 @@ def main():
     os.spawnl(os.P_NOWAIT, os.curdir + os.sep + PROXY_LIST_PY, PROXY_LIST_PY)
 
     while True:
-        for i in range(3):
+        for i in range(HEADS):
             log.info("Testing proxies.")
             for http in privoxy:
                 log.info(f"* Privoxy {http.id}")
