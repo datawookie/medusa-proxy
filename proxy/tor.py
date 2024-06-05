@@ -97,7 +97,7 @@ class Tor(Service):
                 ]
                 location = " | ".join(location)
 
-        log.info(f"port {self.port}: {ip:>15}" + location)
+        log.info(f"port {self.port}: {ip:>15} | PID {self.pid:>4}" + location)
 
         return result
 
