@@ -1,14 +1,14 @@
-FROM alpine:3.18.0
+FROM python:3.12.3-slim
+
+RUN apt-get update && \
+    apt install -y \
+        tor \
+        haproxy \
+        privoxy
 
 COPY requirements.txt .
 
-RUN apk add 'tor' --no-cache \
-      --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
-      --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-      --allow-untrusted haproxy privoxy python3 && \
-    python3 -m ensurepip --upgrade && \
-    pip3 install --upgrade pip && \
-    pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 WORKDIR /
 
