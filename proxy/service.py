@@ -44,7 +44,7 @@ class Service:
 
     def run(self, *args):
         command = " ".join(args)
-        log.info(f"Running: {command}.")
+        log.debug(f"Running: {command}.")
         os.system(command)
 
     def stop(self):
