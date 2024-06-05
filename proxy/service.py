@@ -8,6 +8,7 @@ from . import log
 class Service:
     def __init__(self, port):
         self.port = port
+        self.PID = None
 
         for dir in ["lib", "run", "log"]:
             try:
@@ -30,7 +31,14 @@ class Service:
 
     @property
     def pid(self):
-        return int(open(self.pid_file, "rt").read().strip())
+        if self.PID is None:
+            try:
+                with open(self.pid_file, "rt") as file:
+                    self.PID = int(file.read().strip())
+            except FileNotFoundError:
+                pass
+
+        return self.PID
 
     @property
     def data_directory(self):
@@ -39,8 +47,9 @@ class Service:
     def kill(self, signal):
         try:
             os.kill(self.pid, signal)
-        except FileNotFoundError:
-            log.error("⛔ Unable to open PID file.")
+        except ProcessLookupError:
+            # End up here if process doesn't exist (Tor has exited already?).
+            pass
 
     def run(self, *args):
         command = " ".join(args)
