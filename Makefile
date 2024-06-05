@@ -15,7 +15,7 @@ push:
 
 run:
 	@docker stop $(IMAGE) || true
-	docker run --rm \
+	docker run --rm -it \
 		--name $(IMAGE) \
 		-e TORS=3 \
 		-e HEADS=2 \
