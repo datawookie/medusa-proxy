@@ -65,6 +65,7 @@ class Tor(Service):
             json.decoder.JSONDecodeError,
             requests.exceptions.ConnectionError,
             requests.exceptions.ReadTimeout,
+            ConnectionError,
         ):
             ip = "---"
             result = False
@@ -88,6 +89,7 @@ class Tor(Service):
                 ConnectionError,
             ):
                 log.warning("🚨 Failed to get location.")
+                #ip-api might get overloaded and it returns jist a ConnectionError, better be safe than sorry
 
             if location:
                 location = [
