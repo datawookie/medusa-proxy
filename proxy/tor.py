@@ -89,7 +89,7 @@ class Tor(Service):
                 ConnectionError,
             ):
                 log.warning("🚨 Failed to get location.")
-                #ip-api might get overloaded and it returns jist a ConnectionError, better be safe than sorry
+                #ip-api might get overloaded and it returns just a ConnectionError, better be safe than sorry
 
             if location:
                 location = [
