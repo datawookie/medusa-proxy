@@ -85,6 +85,7 @@ class Tor(Service):
                 json.decoder.JSONDecodeError,
                 requests.exceptions.ConnectTimeout,
                 requests.exceptions.ReadTimeout,
+                ConnectionError,
             ):
                 log.warning("🚨 Failed to get location.")
 
