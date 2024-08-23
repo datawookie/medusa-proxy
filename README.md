@@ -44,10 +44,10 @@ docker run --rm --name tor-proxy-rotating -e TORS=3 -e HEADS=2 \
     datawookie/tor-proxy-rotating
 
 # Test SOCKS proxy
-curl --socks5 localhost:5566 http://httpbin.org/ip
+curl --socks5 localhost:5566 https://ipinfo.io/ip
 
 # Test HTTP proxy
-curl --proxy localhost:8888 http://httpbin.org/ip
+curl --proxy localhost:8888 https://ipinfo.io/ip
 
 # Run Chromium through the proxy
 chromium --proxy-server="http://localhost:8118" \
