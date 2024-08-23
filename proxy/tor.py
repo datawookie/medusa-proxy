@@ -55,55 +55,35 @@ class Tor(Service):
         #
         try:
             response = requests.get(
-                "https://api.ipify.org?format=json",
+                f"https://ipinfo.io/json",
                 proxies=proxies,
                 timeout=WORKING_TIMEOUT,
             )
-            ip = json.loads(response.text.strip())["ip"]
-            result = True
+            location = response.json()
         except (
             json.decoder.JSONDecodeError,
-            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectTimeout,
             requests.exceptions.ReadTimeout,
+            requests.exceptions.ConnectionError,
         ):
-            ip = "---"
-            result = False
+            return False
+            log.warning("🚨 Failed to get location.")
 
-        location = ""
-        #
-        if result:
-            # Get IP location.
-            #
-            try:
-                response = requests.get(
-                    f"https://ipinfo.io/{ip}/json",
-                    proxies=proxies,
-                    timeout=WORKING_TIMEOUT,
-                )
-                location = response.json()
-            except (
-                json.decoder.JSONDecodeError,
-                requests.exceptions.ConnectTimeout,
-                requests.exceptions.ReadTimeout,
-                requests.exceptions.ConnectionError,
-            ):
-                log.warning("🚨 Failed to get location.")
+        if location:
+            # IPinfo returns strings for loc in "lat,lng" format
+            loc_string = location['loc']
+            lat, lon = map(float, loc_string.split(','))
 
-            if location:
-                # IPinfo returns strings for loc in "lat,lng" format
-                loc_string = location['loc']
-                lat, lon = map(float, loc_string.split(','))
-
-                location = [
-                    "",
-                    f"{location['city']}, {location['country']:15}",
-                    f"{lat:+6.2f} / {lon:+7.2f}",
-                ]
-                location = " | ".join(location)
+            location = [
+                "",
+                f"{location['city']}, {location['country']:15}",
+                f"{lat:+6.2f} / {lon:+7.2f}",
+            ]
+            location = " | ".join(location)
 
         log.info(f"port {self.port}: {ip:>15} | PID {self.pid:>4}" + location)
 
-        return result
+        return True
 
     @property
     def data_directory(self):
