@@ -76,7 +76,7 @@ class Tor(Service):
             #
             try:
                 response = requests.get(
-                    f"http://ip-api.com/json/{ip}",
+                    f"https://ipinfo.io/{ip}/json",
                     proxies=proxies,
                     timeout=WORKING_TIMEOUT,
                 )
@@ -90,11 +90,14 @@ class Tor(Service):
                 log.warning("🚨 Failed to get location.")
 
             if location:
+                # IPinfo returns strings for loc in "lat,lng" format
+                loc_string = location['loc']
+                lat, lon = map(float, loc_string.split(','))
+
                 location = [
                     "",
-                    f"{location['country']:15}",
-                    f"{location['city']:18}",
-                    f"{location['lat']:+6.2f} / {location['lon']:+7.2f}",
+                    f"{location['city']}, {location['country']:15}",
+                    f"{lat:+6.2f} / {lon:+7.2f}",
                 ]
                 location = " | ".join(location)
 
