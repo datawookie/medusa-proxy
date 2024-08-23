@@ -71,8 +71,8 @@ class Tor(Service):
 
         if location:
             # IPinfo returns strings for loc in "lat,lng" format
-            loc_string = location['loc']
-            lat, lon = map(float, loc_string.split(','))
+            loc_string = location["loc"]
+            lat, lon = map(float, loc_string.split(","))
 
             location = [
                 "",
