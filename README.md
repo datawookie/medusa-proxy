@@ -31,17 +31,17 @@ Privoxy exposes an HTTP proxy.
 
 ```bash
 # Build Docker image
-docker build -t datawookie/tor-proxy-rotating .
+docker build -t datawookie/medusa-proxy .
 
 # Pull Docker image
-docker pull datawookie/tor-proxy-rotating:latest
+docker pull datawookie/medusa-proxy:latest
 
 # Start docker container
-docker run --rm --name tor-proxy-rotating -e TORS=3 -e HEADS=2 \
+docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
     -p 8888:8888 -p 8889:8889 \
     -p 1080:1080 -p 1081:1081 \
     -p 2090:2090 \
-    datawookie/tor-proxy-rotating
+    datawookie/medusa-proxy
 
 # Test SOCKS proxy
 curl --socks5 localhost:5566 http://httpbin.org/ip
