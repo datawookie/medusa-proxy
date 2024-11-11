@@ -2,6 +2,13 @@
 
 <img src="medusa-banner.webp">
 
+The Docker image is based on the following:
+
+- Python — 3.12.3-slim
+- Privoxy — 3.0.34
+- HAProxy — 2.6.12-1+deb12u1
+- Tor — 0.4.7.16
+
 ## HAProxy
 
 [HAProxy](https://www.haproxy.com/) is a high availability load balancer and proxy server that spreads requests across multiple services.
