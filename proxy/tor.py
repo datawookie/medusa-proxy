@@ -62,6 +62,7 @@ class Tor(Service):
             ip = json.loads(response.text.strip())["ip"]
             result = True
         except (
+            KeyError,
             json.decoder.JSONDecodeError,
             requests.exceptions.ConnectionError,
             requests.exceptions.ReadTimeout,
