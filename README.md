@@ -4,10 +4,10 @@
 
 The Docker image is based on the following:
 
-- Python — 3.12.3-slim
+- Python — 3.13-alpine
 - Privoxy — 3.0.34
-- HAProxy — 2.6.12-1+deb12u1
-- Tor — 0.4.7.16
+- HAProxy — 2.8.11-01c1056
+- Tor — 0.4.8.13
 
 ## HAProxy
 
