@@ -1,10 +1,6 @@
-FROM python:3.13.0-slim
+FROM python:3.13-alpine
 
-RUN apt-get update && \
-    apt install -y \
-        tor \
-        haproxy \
-        privoxy
+RUN apk add tor haproxy privoxy
 
 COPY requirements.txt .
 
