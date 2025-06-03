@@ -36,7 +36,7 @@ Note: If `TOR_BRIDGES` is empty `TOR_USEBRIDGES` will always `0`
 
 ## Tor Bridges config
 
-To enable the Bridges function, you must set the value TOR_USEBRIDGES=1 and specify the bridges using one of the following variations (to reduce priority):
+To enable the Bridges function, you must set the value `TOR_USEBRIDGES=1` and specify the bridges using one of the following variations (to reduce priority):
 - in the `/templates/bridges.lst` file
 
 example file content
