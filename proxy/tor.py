@@ -37,7 +37,6 @@ class Tor(Service):
         with open("templates/tor.cfg", "rt") as file:
             template = jinja2.Template(file.read())
 
-
         # Additional parameters for bridge enable
         #
         EXITNODES = os.environ.get("TOR_EXITNODES", "")
@@ -49,18 +48,18 @@ class Tor(Service):
             with open("templates/bridges.lst", "r") as file_bridges:
                 bridges_string = file_bridges.read()
         else:
-            if (BRIDGES==""):
-                USEBRIDGES="0"
-                bridges_string=""
+            if BRIDGES == "":
+                USEBRIDGES = "0"
+                bridges_string = ""
             else:
-                BRIDGESLIST = [x.strip().strip("'") for x in BRIDGES.split(',')]
-                bridges_string='\n'.join(BRIDGESLIST) + '\n'
+                BRIDGESLIST = [x.strip().strip("'") for x in BRIDGES.split(",")]
+                bridges_string = "\n".join(BRIDGESLIST) + "\n"
 
         config = template.render(
             new_circuit_period=self.new_circuit_period,
             new_exit_nodes=EXITNODES,
             use_bridges=USEBRIDGES,
-            bridges=bridges_string
+            bridges=bridges_string,
         )
 
         with open(CONFIG_PATH, "wt") as file:

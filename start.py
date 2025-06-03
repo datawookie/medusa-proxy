@@ -15,8 +15,9 @@ PROXY_LIST_PY = "proxy-list.py"
 TORS = int(os.environ.get("TORS", 5))
 HEADS = int(os.environ.get("HEADS", 1))
 
+
 def get_versions():
-    
+
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
         result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
 

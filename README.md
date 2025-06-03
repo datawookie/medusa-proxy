@@ -54,7 +54,7 @@ docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
     -e TOR_BRIDGES="Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0,Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0"
     -p 8888:8888 -p 8889:8889 \
     -p 1080:1080 -p 1081:1081 \
-    -p 2090:2090 \    
+    -p 2090:2090 \
     datawookie/medusa-proxy
 ```
 
@@ -67,7 +67,7 @@ TOR_BRIDGES="Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8D
 Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0"
 ```
 
-if bridges setted in `/templates/bridges.lst` file, it will ignore `TOR_BRIDGES` environment variable. 
+if bridges setted in `/templates/bridges.lst` file, it will ignore `TOR_BRIDGES` environment variable.
 
 if file is not exist it will use `TOR_BRIDGES` environment variable.
 
