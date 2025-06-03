@@ -1,7 +1,6 @@
 services:
   medusa-proxy:
     image: datawookie/medusa-proxy
-    build: .
 
     environment:
       # - HEADS=2
