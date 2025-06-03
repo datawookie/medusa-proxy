@@ -27,6 +27,64 @@ Privoxy exposes an HTTP proxy.
 - `TORS` — Number of Tor instances (default: 5)
 - `HAPROXY_LOGIN` — Username for HAProxy (default: "admin")
 - `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin")
+- `TOR_USEBRIDGES` - Enable bridge feature for tor (default: 0)
+- `TOR_BRIDGES` - Bridge multiline string with bridges records (default : "")
+- `TOR_EXITNODES` - Tor exit nodes config (default : "" , for example `TOR_EXITNODES={ru}` or `TOR_EXITNODES={ru},{en}`)
+
+
+Note: If `TOR_BRIDGES` is empty `TOR_USEBRIDGES` will always `0`
+
+## Tor Bridges config
+
+To enable the Bridges function, you must set the value TOR_USEBRIDGES=1 and specify the bridges using one of the following variations (to reduce priority):
+- in the `/templates/bridges.lst` file
+
+example file content
+```
+Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0
+Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0
+```
+
+- in the `TOR_BRIDGES` environment variable in the `docker` command call
+
+example for docker run command
+```bash
+docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
+    -e TOR_USEBRIDGES=1
+    -e TOR_BRIDGES="Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0,Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0"
+    -p 8888:8888 -p 8889:8889 \
+    -p 1080:1080 -p 1081:1081 \
+    -p 2090:2090 \    
+    datawookie/medusa-proxy
+```
+
+- in the `TOR_BRIDGES` environment variable `.env` file
+
+example for env file
+```ini
+TOR_USEBRIDGES=1
+TOR_BRIDGES="Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0,
+Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0"
+```
+
+if bridges setted in `/templates/bridges.lst` file, it will ignore `TOR_BRIDGES` environment variable. 
+
+if file is not exist it will use `TOR_BRIDGES` environment variable.
+
+if `TOR_BRIDGES` environment variable is missing it wiall ignore `TOR_USEBRIDGES` environment variable and disable Bridges feature
+
+
+[info about tor bridges](https://torproject.github.io/manual/bridges/)
+
+get briges records on [torproject](https://bridges.torproject.org/options)
+
+for example
+```
+obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0
+obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0
+
+```
+
 
 ## Ports
 
@@ -51,13 +109,13 @@ docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
     datawookie/medusa-proxy
 
 # Test SOCKS proxy
-curl --socks5 localhost:5566 http://httpbin.org/ip
+curl --socks5 localhost:1080 http://httpbin.org/ip
 
 # Test HTTP proxy
 curl --proxy localhost:8888 http://httpbin.org/ip
 
 # Run Chromium through the proxy
-chromium --proxy-server="http://localhost:8118" \
+chromium --proxy-server="http://localhost:8888" \
     --host-resolver-rules="MAP * 0.0.0.0 , EXCLUDE localhost"
 
 # Access monitor

@@ -15,15 +15,15 @@ PROXY_LIST_PY = "proxy-list.py"
 TORS = int(os.environ.get("TORS", 5))
 HEADS = int(os.environ.get("HEADS", 1))
 
-
 def get_versions():
+    
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
         result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
 
         version = result.stdout.decode("utf-8").partition("\n")[0]
         version = re.sub(r" +([0-9/]{10})?[ -]*\(?(https://.*)?\)?\.?$", "", version)
         version = re.sub(r" version", ":", version)
-        version = re.sub("\.$", "", version)
+        version = re.sub("\\.$", "", version)
 
         log.info("- " + version)
 
@@ -44,7 +44,7 @@ def main():
     log.info("Done.")
 
     log.info("Serving proxy list.")
-    os.spawnl(os.P_NOWAIT, os.curdir + os.sep + PROXY_LIST_PY, PROXY_LIST_PY)
+    os.spawnl(os.P_NOWAIT, "python3", PROXY_LIST_PY)
 
     while True:
         for i in range(HEADS):
