@@ -18,4 +18,4 @@ RUN chmod +x *.py
 
 EXPOSE 2090 1080 8888 8800
 
-CMD python start.py
+CMD ./start.py

@@ -85,6 +85,9 @@ obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+Mc
 
 ```
 
+### note:
+
+Bridges in examples may not works, before start using you need get own bridges on [torproject](https://bridges.torproject.org/options)
 
 ## Ports
 

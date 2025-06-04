@@ -1,6 +1,7 @@
 services:
   medusa-proxy:
     image: datawookie/medusa-proxy
+    build: . #if need build from local Dockerfile
 
     environment:
       # - HEADS=2
