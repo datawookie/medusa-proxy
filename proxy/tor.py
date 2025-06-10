@@ -43,9 +43,9 @@ class Tor(Service):
         USEBRIDGES = os.environ.get("TOR_USEBRIDGES", "0")
         BRIDGES = os.environ.get("TOR_BRIDGES", "")
 
-        bridges_file = Path("templates/bridges.lst")
+        bridges_file = Path("bridges.lst")
         if bridges_file.exists():
-            with open("templates/bridges.lst", "r") as file_bridges:
+            with open("bridges.lst", "r") as file_bridges:
                 bridges_string = file_bridges.read()
         else:
             if BRIDGES == "":
