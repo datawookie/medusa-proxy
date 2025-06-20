@@ -40,10 +40,10 @@ class Tor(Service):
         # Additional parameters for bridge enable
         #
         EXITNODES = os.environ.get("TOR_EXIT_NODES", "")
-        
+
         if EXITNODES != "":
             exitnodes_list = [x.strip().strip("'") for x in EXITNODES.split(",")]
-            exitnodes_string = "{"+"},{".join(exitnodes_list) + "}"      
+            exitnodes_string = "{" + "},{".join(exitnodes_list) + "}"
         else:
             exitnodes_string = ""
 
