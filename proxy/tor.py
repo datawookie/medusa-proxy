@@ -39,12 +39,19 @@ class Tor(Service):
 
         # Additional parameters for bridge enable
         #
-        EXITNODES = os.environ.get("TOR_EXITNODES", "")
-        USEBRIDGES = os.environ.get("TOR_USEBRIDGES", "0")
-        BRIDGES = os.environ.get("TOR_BRIDGES", "")
+        EXITNODES = os.environ.get("TOR_EXIT_NODES", "")
+        
+        if EXITNODES != "":
+            exitnodes_list = [x.strip().strip("'") for x in EXITNODES.split(",")]
+            exitnodes_string = "{"+"},{".join(exitnodes_list) + "}"      
+        else:
+            exitnodes_string = ""
 
+        BRIDGES = os.environ.get("TOR_BRIDGES", "")
         bridges_file = Path("bridges.lst")
+
         if bridges_file.exists():
+            USEBRIDGES = "1"
             with open("bridges.lst", "r") as file_bridges:
                 bridges_string = file_bridges.read()
         else:
@@ -52,12 +59,13 @@ class Tor(Service):
                 USEBRIDGES = "0"
                 bridges_string = ""
             else:
+                USEBRIDGES = "1"
                 BRIDGESLIST = [x.strip().strip("'") for x in BRIDGES.split(",")]
                 bridges_string = "\n".join(BRIDGESLIST) + "\n"
 
         config = template.render(
             new_circuit_period=self.new_circuit_period,
-            new_exit_nodes=EXITNODES,
+            new_exit_nodes=exitnodes_string,
             use_bridges=USEBRIDGES,
             bridges=bridges_string,
         )
