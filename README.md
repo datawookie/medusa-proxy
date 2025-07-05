@@ -23,27 +23,31 @@ Privoxy exposes an HTTP proxy.
 
 ## Environment Variables
 
-- `HEADS` — Number of Privoxy instances (default: 1)
-- `TORS` — Number of Tor instances (default: 5)
-- `HAPROXY_LOGIN` — Username for HAProxy (default: "admin")
-- `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin")
-- `TOR_BRIDGES` - Bridge multiline string with bridges records (default : "")
-- `TOR_EXIT_NODES` - Tor exit nodes config (default : "" , for example `TOR_EXIT_NODES=ru` or `TOR_EXIT_NODES=ru,en`)
+- `HEADS` — Number of Privoxy instances (default: 1).
+- `TORS` — Number of Tor instances (default: 5).
+- `HAPROXY_LOGIN` — Username for HAProxy (default: "admin").
+- `HAPROXY_PASSWORD` — Password for HAProxy (default: "admin").
+- `TOR_BRIDGES` - Bridge multiline string with bridges records (default : "").
+- `TOR_EXIT_NODES` - Tor exit nodes config (default : "" , for example `TOR_EXIT_NODES=ru` or `TOR_EXIT_NODES=ru,en`).
 
+## Tor Bridges
 
-Note: If `TOR_BRIDGES` is empty bgidges feature will disabled
+Tor bridges are private entry points to the Tor network that are not publicly listed. They are special Tor relays that act like normal entry nodes but are not included in the public Tor directory. They are typically distributed privately or through controlled channels.
 
-## Tor Bridges Configuration
+Why are they useful? They can help you to bypass censorship in countries or networks that block access to the public Tor network. They also make it harder for governments, ISPs, or firewalls to detect or block Tor usage.
 
-To enable the Bridges function, you must specify the bridges using one of the following variations (in order of decreasing priority):
-1. in the `bridges.lst` file
+In summary, Tor bridges allow users to access Tor anonymously when regular access is blocked or surveilled. More information can be found in the [Tor Manual](https://torproject.github.io/manual/bridges/).
+
+To enable the bridges feature, you must specify one or more bridges as follows (in order of decreasing priority):
+
+1. Create a `bridges.lst` file.
 
     ```
     Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0
     Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0
     ```
 
-2. in the `TOR_BRIDGES` environment variable (for exaample in the `docker` command call)
+2. Specify the `TOR_BRIDGES` environment variable.
 
     ```bash
     docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
@@ -54,24 +58,10 @@ To enable the Bridges function, you must specify the bridges using one of the fo
         datawookie/medusa-proxy
     ```
 
-When bridges are specified in the file `bridges.lst`, the value specified in the environment variable `TOR_BRIDGES` will be ignored.
+Notes:
 
-If file `bridges.lst` is not exist it will use `TOR_BRIDGES` environment variable. If `TOR_BRIDGES` environment variable is missing it will disable Bridges feature
-
-[info about tor bridges](https://torproject.github.io/manual/bridges/)
-
-get briges records on [torproject](https://bridges.torproject.org/options)
-
-for example
-```
-obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0
-obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0
-
-```
-
-### note:
-
-Bridges in examples may not works, before start using you need get own bridges on [torproject](https://bridges.torproject.org/options).
+1. If no bridges are configured then the Tor bridges feature will be disabled.
+2. The bridges in the examples may not work. Get working bridges from the Tor Project's [BridgeDB](https://bridges.torproject.org/options).
 
 ## Ports
 
