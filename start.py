@@ -24,7 +24,7 @@ def get_versions():
         version = result.stdout.decode("utf-8").partition("\n")[0]
         version = re.sub(r" +([0-9/]{10})?[ -]*\(?(https://.*)?\)?\.?$", "", version)
         version = re.sub(r" version", ":", version)
-        version = re.sub("\\.$", "", version)
+        version = re.sub(r"\.$", "", version)
 
         log.info("- " + version)
 
