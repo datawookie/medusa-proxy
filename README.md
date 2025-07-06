@@ -41,16 +41,7 @@ In summary, Tor bridges allow users to access Tor anonymously when regular acces
 To enable the bridges feature, you must specify one or more bridges as follows (in order of decreasing priority):
 
 1. Create a `bridges.lst` file. See `sample-bridges.lst` for an example.
-2. Specify the `TOR_BRIDGES` environment variable.
-
-    ```bash
-    docker run --rm --name medusa-proxy -e TORS=3 -e HEADS=2 \
-        -e TOR_BRIDGES="Bridge obfs4 37.18.133.75:44821 D40DA77CA68F39666F77CE8BA6FF332BF8DB3F31 cert=B4yVW8heE83luCJt+oQN1kDB/j4kWkNx6mtOc9O6GhLAV8zJx0lfUI6zWO9UxUoV5PX/Zw iat-mode=0,Bridge obfs4 51.81.26.157:443 8A7322A463C051DB6DC35B1159F119FC3373BB06 cert=kp6Czj/f+McG9OKwltQ4kGb41mjj8Mzp3flpTG8/VK5zXtfnZ+DToe33fumyq7Yq7WnbGA iat-mode=0"
-        -p 8888:8888 -p 8889:8889 \
-        -p 1080:1080 -p 1081:1081 \
-        -p 2090:2090 \
-        datawookie/medusa-proxy
-    ```
+2. Specify the `TOR_BRIDGES` environment variable. If you're adding multiple bridges then simply separate them with commas. You can do this either by (i) setting an environment variable in your shell prior to executing `docker run`, (ii) using the `-e` argument with `docker run` or (iii) by setting it in the `docker-compose.yaml` file (see `sample-docker-compose.yaml`).
 
 Notes:
 

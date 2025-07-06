@@ -1,0 +1,20 @@
+services:
+  medusa-proxy:
+    image: datawookie/medusa-proxy
+    build: .
+
+    environment:
+      - HEADS=2
+      - TORS=5
+      - TOR_EXITNODES={de}
+      - TOR_BRIDGES="Bridge obfs4 148.252.111.70:9040 F4462199499EF2D3E9F7A686D8AE71C50E1CB5E0 cert=57ypxWpn24PhWqKbUAqYRhIXX7uPk1Uo6m/mslymxcl6D6yTb6CjoLIJ96IfwIGOXXa+cw iat-mode=0"
+
+    container_name: medusa-proxy
+    volumes:
+      - ./bridges.lst:/bridges.lst:ro
+    restart: no
+    ports:
+      - '8888:8888'
+      - '1080:1080'
+      - '2090:2090'
+      - '8800:8800'
