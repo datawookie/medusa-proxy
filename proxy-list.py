@@ -2,6 +2,7 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
+from proxy import log
 
 HTML_FILE_NAME = "proxy-list.txt"
 PORT_NUMBER = 8800
@@ -21,5 +22,6 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404, "File Not Found: %s." % self.path)
 
 
+log.info("Started HTTP server for proxy list on port %i." % PORT_NUMBER)
 print("Started HTTP server on port %i." % PORT_NUMBER)
 server = HTTPServer(("", PORT_NUMBER), Handler).serve_forever()
