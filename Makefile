@@ -4,6 +4,10 @@ USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
 
+clean: 
+	-@docker rmi -f $(IMAGE_VERSION) $(IMAGE_LATEST) 2>/dev/null
+	-@docker builder prune -af
+
 build:
 	echo $(IMAGE_VERSION)
 	docker build -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
@@ -18,7 +22,7 @@ run:
 	docker run --rm -it \
 		--name $(IMAGE) \
 		-e TORS=3 \
-		-e HEADS=2 \
+		-e HEADS=4 \
 		-p 8800:8800 \
 		-p 8888:8888 -p 8889:8889 \
 		-p 1080:1080 -p 1081:1081 \
