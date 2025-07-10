@@ -56,6 +56,8 @@ Notes:
 
 ## Usage
 
+The Docker image is available from [Docker Hub](https://hub.docker.com/repository/docker/datawookie/medusa-proxy/) but you can also build it locally.
+
 ```bash
 # Build Docker image
 docker build -t datawookie/medusa-proxy .
