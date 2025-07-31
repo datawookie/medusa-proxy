@@ -4,7 +4,7 @@ USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
 
-clean: 
+clean:
 	-@docker rmi -f $(IMAGE_VERSION) $(IMAGE_LATEST) 2>/dev/null
 	-@docker builder prune -af
 
