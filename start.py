@@ -17,6 +17,7 @@ HEADS = int(os.environ.get("HEADS", 1))
 PROXY_CHECK_INTERVAL = os.environ.get("PROXY_CHECK_INTERVAL", "15m")
 TORS = int(os.environ.get("TORS", 5))
 
+
 def get_versions():
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
         result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
@@ -28,6 +29,7 @@ def get_versions():
 
         log.info("- " + version)
 
+
 def parse_time_interval(time_str):
     default_timedelta = timedelta(minutes=15)
     if time_str.endswith("s"):
@@ -37,6 +39,7 @@ def parse_time_interval(time_str):
     elif time_str.endswith("h"):
         return timedelta(hours=int(time_str[:-1]))
     return default_timedelta
+
 
 def main():
     log.info("========================================")
@@ -71,6 +74,7 @@ def main():
             time.sleep(sleep_time)
         for http in privoxy:
             http.cycle()
+
 
 try:
     main()
