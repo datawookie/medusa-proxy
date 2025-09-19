@@ -12,12 +12,11 @@ from proxy import log, Privoxy
 PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
-TORS = int(os.environ.get("TORS", 5))
 HEADS = int(os.environ.get("HEADS", 1))
-
+PROXY_CHECK_INTERVAL = int(os.environ.get("PROXY_CHECK_INTERVAL", 15)) # In minutes
+TORS = int(os.environ.get("TORS", 5))
 
 def get_versions():
-
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
         result = subprocess.run(cmd.split(), stdout=subprocess.PIPE)
 
@@ -27,7 +26,6 @@ def get_versions():
         version = re.sub(r"\.$", "", version)
 
         log.info("- " + version)
-
 
 def main():
     log.info("========================================")
@@ -57,13 +55,10 @@ def main():
                     if not proxy.working:
                         log.warning("Restarting.")
                         proxy.restart()
-
             log.info("Sleeping.")
-            time.sleep(60)
-
+            time.sleep(PROXY_CHECK_INTERVAL * 60)
         for http in privoxy:
             http.cycle()
-
 
 try:
     main()
