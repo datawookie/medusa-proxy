@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import re
-import time
 import subprocess
+import sys
+import time
 
 from config import *
-from proxy import log, Privoxy
+from datetime import timedelta
+from proxy import Privoxy, log
 
 PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
 HEADS = int(os.environ.get("HEADS", 1))
-PROXY_CHECK_INTERVAL = int(os.environ.get("PROXY_CHECK_INTERVAL", 15))  # In minutes
+PROXY_CHECK_INTERVAL = os.environ.get("PROXY_CHECK_INTERVAL", "15m")
 TORS = int(os.environ.get("TORS", 5))
-
 
 def get_versions():
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
@@ -28,6 +28,15 @@ def get_versions():
 
         log.info("- " + version)
 
+def parse_time_interval(time_str):
+    default_timedelta = timedelta(minutes=15)
+    if time_str.endswith("s"):
+        return timedelta(seconds=int(time_str[:-1]))
+    elif time_str.endswith("m"):
+        return timedelta(minutes=int(time_str[:-1]))
+    elif time_str.endswith("h"):
+        return timedelta(hours=int(time_str[:-1]))
+    return default_timedelta
 
 def main():
     log.info("========================================")
@@ -37,6 +46,7 @@ def main():
     log.info("========================================")
 
     privoxy = [Privoxy(TORS, i) for i in range(HEADS)]
+    sleep_time = parse_time_interval(PROXY_CHECK_INTERVAL).total_seconds()
 
     log.info("Writing proxy list.")
     with open(PROXY_LIST_TXT, "wt") as file:
@@ -57,11 +67,10 @@ def main():
                     if not proxy.working:
                         log.warning("Restarting.")
                         proxy.restart()
-            log.info("Sleeping.")
-            time.sleep(PROXY_CHECK_INTERVAL * 60)
+            log.info(f"Sleeping for {sleep_time} seconds.")
+            time.sleep(sleep_time)
         for http in privoxy:
             http.cycle()
-
 
 try:
     main()

@@ -26,7 +26,7 @@ Privoxy exposes an HTTP proxy.
 - `HAPROXY_LOGIN` — Username for HAProxy (default: `admin`).
 - `HAPROXY_PASSWORD` — Password for HAProxy (default: `admin`).
 - `HEADS` — Number of Privoxy instances (default: `1`).
-- `PROXY_CHECK_INTERVAL` — Represents the interval (in minutes) at which the proxy checks/rotations are performed (default: `15`).
+- `PROXY_CHECK_INTERVAL` — Represents the interval at which the proxy checks/rotations are performed (default: `15m`).
 - `TORS` — Number of Tor instances (default: `5`).
 - `TOR_BRIDGES` — Bridge multiline string with bridges records (default: `""`).
 - `TOR_EXIT_NODES` — Tor exit nodes config (default: `""`, for example `TOR_EXIT_NODES=ru` or `TOR_EXIT_NODES=ru,en`).
