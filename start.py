@@ -70,7 +70,7 @@ def main():
                     if not proxy.working:
                         log.warning("Restarting.")
                         proxy.restart()
-            log.info(f"Sleeping for {sleep_time} seconds.")
+            log.info(f"Sleeping for {PROXY_CHECK_INTERVAL}.")
             time.sleep(sleep_time)
         for http in privoxy:
             http.cycle()
