@@ -13,8 +13,9 @@ PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
 
 HEADS = int(os.environ.get("HEADS", 1))
-PROXY_CHECK_INTERVAL = int(os.environ.get("PROXY_CHECK_INTERVAL", 15)) # In minutes
+PROXY_CHECK_INTERVAL = int(os.environ.get("PROXY_CHECK_INTERVAL", 15))  # In minutes
 TORS = int(os.environ.get("TORS", 5))
+
 
 def get_versions():
     for cmd in ["privoxy --version", "haproxy -v", "tor --version"]:
@@ -26,6 +27,7 @@ def get_versions():
         version = re.sub(r"\.$", "", version)
 
         log.info("- " + version)
+
 
 def main():
     log.info("========================================")
@@ -59,6 +61,7 @@ def main():
             time.sleep(PROXY_CHECK_INTERVAL * 60)
         for http in privoxy:
             http.cycle()
+
 
 try:
     main()
