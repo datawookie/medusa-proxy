@@ -4,12 +4,14 @@ WORKDIR /
 
 COPY proxy/ /proxy
 COPY templates/ /templates
-COPY config.py proxy-list.py start.py /
+COPY config.py health-check.py proxy-list.py start.py /
 COPY requirements.txt .
 
 RUN apk --no-cache --no-progress add haproxy lyrebird=~0.6 privoxy tor; \
   pip3 install --no-cache-dir --requirement requirements.txt; \
   rm requirements.txt
+
+HEALTHCHECK --interval=5m --retries=3 --start-period=15s --timeout=5s CMD ["/health-check.py"]
 
 EXPOSE 1080 2090 8800 8888
 
