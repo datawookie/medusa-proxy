@@ -17,6 +17,7 @@ def message(message: str, code: int | None = None) -> None:
     if code:
         sys.exit(code)
 
+
 def check_tor_connection():
     try:
         response = requests.get(URL, proxies={"https": PROXY}, timeout=TIMEOUT)

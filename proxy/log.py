@@ -1,6 +1,8 @@
-from logging import *
+from logging import basicConfig, getLogger, INFO, WARNING, info, debug, warning
 
-from config import LOG_LEVEL
+LOG_LEVEL = INFO
+
+__all__ = ["info", "debug", "warning"]
 
 basicConfig(level=LOG_LEVEL, format="%(asctime)s [%(levelname)7s] %(message)s")
 getLogger("urllib3").setLevel(WARNING)

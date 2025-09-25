@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 
-from config import *
+from config import VERSION
 from datetime import timedelta
 from proxy import Privoxy, log
 
