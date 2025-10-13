@@ -4,13 +4,11 @@ USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
 
-clean:
-	-@docker rmi -f $(IMAGE_VERSION) $(IMAGE_LATEST) 2>/dev/null
-	-@docker builder prune -af
-
 build:
 	echo $(IMAGE_VERSION)
+	uv pip freeze > requirements.txt
 	docker build -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
+	rm -f requirements.txt
 
 push:
 	docker login
@@ -28,3 +26,7 @@ run:
 		-p 1080:1080 -p 1081:1081 \
 		-p 2090:2090 -p 2091:2091 \
 		$(IMAGE_VERSION)
+
+clean:
+	-@docker rmi -f $(IMAGE_VERSION) $(IMAGE_LATEST) 2>/dev/null
+	-@docker builder prune -af

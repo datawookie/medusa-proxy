@@ -5,3 +5,4 @@
 *.pyc
 *.log
 proxy-list.txt
+requirements.txt
