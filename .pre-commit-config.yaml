@@ -7,11 +7,11 @@ repos:
         exclude: '.cfg$'
     -   id: check-yaml
 - repo: https://github.com/astral-sh/uv-pre-commit
-  rev: 0.8.17
+  rev: 0.9.18
   hooks:
     - id: uv-lock
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.0
+  rev: v0.14.10
   hooks:
     - id: ruff
       args: ["--fix", "--verbose"]
