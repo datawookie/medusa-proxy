@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.13-alpine
+FROM python:3.13-alpine3.23
 
 WORKDIR /
 
@@ -7,7 +7,7 @@ COPY templates/ /templates
 COPY config.py health-check.py proxy-list.py start.py /
 COPY requirements.txt .
 
-RUN apk --no-cache --no-progress add haproxy lyrebird=~0.6 privoxy tor; \
+RUN apk --no-cache --no-progress add haproxy lyrebird=~0.7 privoxy tor; \
   pip3 install --no-cache-dir --requirement requirements.txt; \
   rm requirements.txt
 
