@@ -7,7 +7,7 @@ IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
 build:
 	echo $(IMAGE_VERSION)
 	uv pip freeze > requirements.txt
-	docker build -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
+	docker build --progress=plain -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
 	rm -f requirements.txt
 
 push:
