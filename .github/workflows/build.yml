@@ -2,12 +2,12 @@ name: Build and Push Docker Image
 
 on:
   push:
-#     branches:
-#       - master
+    branches:
+      - master
 
 env:
   IMAGE_NAME: medusa-proxy
-  IMAGE_VERSION: 0.3.0
+  IMAGE_VERSION: 0.3.1
   ACCOUNT_NAME: datawookie
   DOCKER_REGISTRY: docker.io
 
