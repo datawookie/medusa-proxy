@@ -30,6 +30,27 @@ Privoxy exposes an HTTP proxy.
 - `TORS` — Number of Tor instances (default: `5`).
 - `TOR_BRIDGES` — Bridge multiline string with bridges records (default: `""`).
 - `TOR_EXIT_NODES` — Tor exit nodes config (default: `""`, for example `TOR_EXIT_NODES=ru` or `TOR_EXIT_NODES=ru,en`).
+- `TORRC_*` — Extra Tor directives appended to generated `torrc` (default: none).
+
+### Extra Tor Directives (`TORRC_*`)
+
+You can append additional Tor directives using environment variables with a `TORRC_` prefix.
+
+Rules:
+
+1. Variable names should use `TORRC_<Directive>`.
+2. `TORRC_<Directive>` can be:
+   - a single value (one directive line), or
+   - a JSON list of strings (multiple repeated directive lines, in list order).
+3. Values (and list items) must be single-line and non-empty.
+4. Directives are appended after Medusa-generated directives. This means `TORRC_*` has higher precedence.
+
+Examples:
+
+```bash
+-e TORRC_SafeLogging=1
+-e TORRC_EXIT_POLICY='["reject *:*","accept *:443"]'
+```
 
 ## Tor Bridges
 

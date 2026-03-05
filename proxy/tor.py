@@ -1,19 +1,17 @@
 import json
-import jinja2
-import requests
 from signal import SIGHUP
-from pathlib import Path
-import os
+
+import requests
 
 from . import log
 from .service import Service
+from .torrc import MANAGED_TORRC_DIRECTIVES, mask_torrc_line, render_torrc_config
 
 CONFIG_PATH = "/etc/tor/torrc"
 
 # Number of seconds to wait when checking if a proxy is working.
 #
 WORKING_TIMEOUT = 5
-
 
 class Tor(Service):
     executable = "/usr/bin/tor"
@@ -34,41 +32,20 @@ class Tor(Service):
         self.max_circuit_dirtiness = max_circuit_dirtiness or 600
         self.circuit_build_timeout = circuit_build_timeout or 60
 
-        with open("templates/tor.cfg", "rt") as file:
-            template = jinja2.Template(file.read())
+        try:
+            config, extra_torrc_lines = render_torrc_config(
+                new_circuit_period=self.new_circuit_period,
+                max_circuit_dirtiness=self.max_circuit_dirtiness,
+                circuit_build_timeout=self.circuit_build_timeout,
+            )
+        except ValueError as error:
+            raise ValueError(f"Invalid TORRC_* configuration: {error}") from error
 
-        # Additional parameters for bridge enable
-        #
-        EXITNODES = os.environ.get("TOR_EXIT_NODES", "")
-
-        if EXITNODES != "":
-            exitnodes_list = [x.strip().strip("'") for x in EXITNODES.split(",")]
-            exitnodes_string = "{" + "},{".join(exitnodes_list) + "}"
-        else:
-            exitnodes_string = ""
-
-        BRIDGES = os.environ.get("TOR_BRIDGES", "")
-        bridges_file = Path("bridges.lst")
-
-        if bridges_file.exists():
-            USEBRIDGES = "1"
-            with open("bridges.lst", "r") as file_bridges:
-                bridges_string = file_bridges.read()
-        else:
-            if BRIDGES == "":
-                USEBRIDGES = "0"
-                bridges_string = ""
-            else:
-                USEBRIDGES = "1"
-                BRIDGESLIST = [x.strip().strip("'") for x in BRIDGES.split(",")]
-                bridges_string = "\n".join(BRIDGESLIST) + "\n"
-
-        config = template.render(
-            new_circuit_period=self.new_circuit_period,
-            new_exit_nodes=exitnodes_string,
-            use_bridges=USEBRIDGES,
-            bridges=bridges_string,
-        )
+        for line in extra_torrc_lines:
+            directive = line.split(" ", maxsplit=1)[0]
+            if directive in MANAGED_TORRC_DIRECTIVES:
+                log.warning(f"TORRC passthrough overrides managed directive: {directive}.")
+            log.info(f"Applying TORRC directive: {mask_torrc_line(line)}")
 
         with open(CONFIG_PATH, "wt") as file:
             file.write(config)
