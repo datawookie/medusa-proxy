@@ -75,7 +75,7 @@ def main():
     log.info("Done.")
 
     log.info("Serving proxy list.")
-    os.spawnl(os.P_NOWAIT, os.curdir + os.sep + PROXY_LIST_PY, PROXY_LIST_PY)
+    os.spawnl(os.P_NOWAIT, sys.executable, sys.executable, PROXY_LIST_PY)
 
     while True:
         for i in range(HEADS):
