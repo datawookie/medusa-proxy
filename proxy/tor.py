@@ -65,7 +65,7 @@ class Tor(Service):
 
         config = template.render(
             new_circuit_period=self.new_circuit_period,
-            new_exit_nodes=exitnodes_string,
+            exit_nodes=exitnodes_string,
             use_bridges=USEBRIDGES,
             bridges=bridges_string,
         )
