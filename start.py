@@ -8,7 +8,13 @@ import sys
 import time
 
 from config import VERSION, parse_time_interval
-from config import HEADS, TORS, PROXY_CHECK_INTERVAL, PROXY_ROTATE_INTERVAL, PROXY_STARTUP_TIMEOUT
+from config import (
+    HEADS,
+    TORS,
+    PROXY_CHECK_INTERVAL,
+    PROXY_ROTATE_INTERVAL,
+    PROXY_STARTUP_TIMEOUT,
+)
 from proxy import Privoxy, log
 
 PROXY_LIST_TXT = "proxy-list.txt"
@@ -89,10 +95,14 @@ def main():
 
         elapsed = time.time() - start_time
         remaining = startup_timeout - elapsed
-        log.debug(f"  No Tor instances ready yet. Waiting... ({remaining:.0f}s remaining)")
+        log.debug(
+            f"  No Tor instances ready yet. Waiting... ({remaining:.0f}s remaining)"
+        )
         time.sleep(startup_check_interval)
     else:
-        log.warning(f"Startup timeout ({PROXY_STARTUP_TIMEOUT}) reached. Starting main loop anyway.")
+        log.warning(
+            f"Startup timeout ({PROXY_STARTUP_TIMEOUT}) reached. Starting main loop anyway."
+        )
         log.warning("Health check will attempt to restart non-working Tor instances.")
 
     log.info("Writing proxy list.")

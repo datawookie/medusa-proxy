@@ -8,7 +8,9 @@ VERSION = "0.3.2"
 # ============================================================================
 
 
-def parse_time_interval(time_str: str, default: timedelta = timedelta(minutes=15)) -> timedelta:
+def parse_time_interval(
+    time_str: str, default: timedelta = timedelta(minutes=15)
+) -> timedelta:
     """
     Parse time interval string into timedelta.
 

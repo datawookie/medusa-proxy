@@ -39,7 +39,9 @@ class Privoxy(Service):
         This sends SIGHUP to each Tor process, causing them to build new circuits
         with different exit nodes. Used for changing IP addresses periodically.
         """
-        log.info(f"Privoxy {self.id}: Rotating {len(self.haproxy.proxies)} Tor circuits.")
+        log.info(
+            f"Privoxy {self.id}: Rotating {len(self.haproxy.proxies)} Tor circuits."
+        )
         for tor_proxy in self.haproxy.proxies:
             tor_proxy.rotate_circuit()
 
