@@ -6,9 +6,9 @@ import signal
 import subprocess
 import sys
 import time
+from datetime import timedelta
 
 from config import VERSION
-from datetime import timedelta
 from proxy import Privoxy, log
 
 PROXY_LIST_TXT = "proxy-list.txt"
@@ -70,8 +70,7 @@ def main():
 
     log.info("Writing proxy list.")
     with open(PROXY_LIST_TXT, "wt") as file:
-        for http in privoxy:
-            file.write("http://127.0.0.1:%d\n" % http.port)
+        file.writelines("http://127.0.0.1:%d\n" % http.port for http in privoxy)
     log.info("Done.")
 
     log.info("Serving proxy list.")

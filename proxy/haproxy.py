@@ -1,6 +1,8 @@
 import os
-from proxy import log
+
 import jinja2
+
+from proxy import log
 
 from .service import Service
 
