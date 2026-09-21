@@ -1,9 +1,10 @@
 import json
+import os
+from pathlib import Path
+from signal import SIGHUP
+
 import jinja2
 import requests
-from signal import SIGHUP
-from pathlib import Path
-import os
 
 from . import log
 from .service import Service
@@ -102,7 +103,6 @@ class Tor(Service):
             result = False
 
         location = ""
-        #
         if result:
             # Get IP location.
             #

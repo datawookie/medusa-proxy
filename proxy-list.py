@@ -2,6 +2,7 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from os import curdir, sep
+
 from proxy import log
 
 HTML_FILE_NAME = "proxy-list.txt"
@@ -18,7 +19,7 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(bytes(f.read(), "UTF-8"))
             return
-        except IOError:
+        except OSError:
             self.send_error(404, "File Not Found: %s." % self.path)
 
 
