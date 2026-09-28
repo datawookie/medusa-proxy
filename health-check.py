@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-import requests
 import sys
+
+import requests
 
 PROXY = "socks5h://127.0.0.1:1080"
 URL = "https://check.torproject.org/api/ip"
