@@ -1,7 +1,7 @@
 import jinja2
 
-from .service import Service
 from .haproxy import Haproxy
+from .service import Service
 from .tor import Tor
 
 
