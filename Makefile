@@ -1,5 +1,5 @@
 IMAGE = medusa-proxy
-VERSION = 0.4.0
+VERSION = 0.4.1
 USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
