@@ -3,15 +3,22 @@ VERSION = 0.4.1
 USERNAME = datawookie
 IMAGE_VERSION = $(USERNAME)/$(IMAGE):$(VERSION)
 IMAGE_LATEST = $(USERNAME)/$(IMAGE):latest
+PLATFORMS = linux/amd64,linux/arm64
+BUILDER = medusa-proxy-multiarch
 
-build:
-	echo $(IMAGE_VERSION)
-	docker build --progress=plain -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
+.PHONY: builder build push run clean
 
-push:
+builder:
+	@docker buildx inspect $(BUILDER) >/dev/null 2>&1 || docker buildx create --name $(BUILDER) --driver docker-container
+	@docker buildx inspect $(BUILDER) --bootstrap >/dev/null
+
+build: builder
+	docker buildx build --builder $(BUILDER) --progress=plain --platform $(PLATFORMS) --output type=cacheonly -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
+	docker buildx build --builder $(BUILDER) --progress=plain --platform local --load -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
+
+push: builder
 	docker login
-	docker push $(IMAGE_VERSION)
-	docker push $(IMAGE_LATEST)
+	docker buildx build --builder $(BUILDER) --progress=plain --platform $(PLATFORMS) --push -t $(IMAGE_VERSION) -t $(IMAGE_LATEST) .
 
 run:
 	@docker stop $(IMAGE) || true

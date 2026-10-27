@@ -80,6 +80,15 @@ Notes:
 
 The Docker image is available from [Docker Hub](https://hub.docker.com/repository/docker/datawookie/medusa-proxy/) but you can also build it locally.
 
+The Makefile builds for both `linux/amd64` and `linux/arm64`. `make build` checks both platforms and loads an image for the local machine so `make run` still works. `make push` builds and publishes both platforms under the versioned and `latest` tags.
+
+```bash
+make build
+make run
+make push
+docker buildx imagetools inspect datawookie/medusa-proxy:latest
+```
+
 ```bash
 # Build Docker image
 docker build -t datawookie/medusa-proxy .
