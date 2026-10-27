@@ -4,5 +4,9 @@ LOG_LEVEL = INFO
 
 __all__ = ["info", "debug", "warning"]
 
-basicConfig(level=LOG_LEVEL, format="%(asctime)s [%(levelname)7s] %(message)s")
+basicConfig(
+    level=LOG_LEVEL,
+    format="%(asctime)s [%(levelname)7s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 getLogger("urllib3").setLevel(WARNING)

@@ -74,7 +74,7 @@ def main():
                 socks = http.haproxy
                 for proxy in socks.proxies:
                     if not proxy.working:
-                        log.warning("Restarting.")
+                        log.debug("Restarting.")
                         proxy.restart()
             log.info(f"Sleeping for {PROXY_CHECK_INTERVAL_SECONDS}s.")
             time.sleep(PROXY_CHECK_INTERVAL_SECONDS)
