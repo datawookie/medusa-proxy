@@ -12,7 +12,7 @@ services:
     container_name: medusa-proxy
     volumes:
       - ./bridges.lst:/bridges.lst:ro
-    restart: no
+    restart: unless-stopped
     ports:
       - '8888:8888'
       - '1080:1080'
