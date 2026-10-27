@@ -13,6 +13,19 @@ CONFIG_PATH = "/etc/tor/torrc"
 #
 WORKING_TIMEOUT = 5
 
+STATUS_HEADER = f"{'Port':<5} | {'IP':<15} | {'PID':>5} | {'Location':<29} | Lat / Lon"
+
+
+def format_status(port, ip, pid, location=None):
+    place = "---"
+    coordinates = "---"
+    if location:
+        place = f"({location['countryCode']}) {location['city']}"
+        coordinates = f"{location['lat']:+6.2f} / {location['lon']:+7.2f}"
+
+    return f"{port:<5} | {ip:<15} | {pid:>5} | {place:<29} | {coordinates}"
+
+
 class Tor(Service):
     executable = "/usr/bin/tor"
     count = 0
@@ -44,7 +57,9 @@ class Tor(Service):
         for line in extra_torrc_lines:
             directive = line.split(" ", maxsplit=1)[0]
             if directive in MANAGED_TORRC_DIRECTIVES:
-                log.warning(f"TORRC passthrough overrides managed directive: {directive}.")
+                log.warning(
+                    f"TORRC passthrough overrides managed directive: {directive}."
+                )
             log.info(f"Applying TORRC directive: {mask_torrc_line(line)}")
 
         with open(CONFIG_PATH, "wt") as file:
@@ -78,7 +93,7 @@ class Tor(Service):
             ip = "---"
             result = False
 
-        location = ""
+        location = None
         #
         if result:
             # Get IP location.
@@ -98,17 +113,8 @@ class Tor(Service):
             ):
                 log.warning("🚨 Failed to get location.")
 
-            if location:
-                location = [
-                    "",
-                    f"{location['country']:15}",
-                    f"{location['city']:18}",
-                    f"{location['lat']:+6.2f} / {location['lon']:+7.2f}",
-                ]
-                location = " | ".join(location)
-
         pid = self.pid if self.pid is not None else "----"
-        log.info(f"port {self.port}: {ip:>15} | PID {pid:>4}" + location)
+        log.info(format_status(self.port, ip, pid, location))
 
         return result
 

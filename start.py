@@ -9,6 +9,7 @@ import time
 
 from config import VERSION
 from proxy import Privoxy, log
+from proxy.tor import STATUS_HEADER
 
 PROXY_LIST_TXT = "proxy-list.txt"
 PROXY_LIST_PY = "proxy-list.py"
@@ -69,6 +70,7 @@ def main():
             log.info("Testing proxies.")
             for http in privoxy:
                 log.info(f"* Privoxy {http.id}")
+                log.info(STATUS_HEADER)
                 socks = http.haproxy
                 for proxy in socks.proxies:
                     if not proxy.working:
